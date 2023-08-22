@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
@@ -7,18 +7,34 @@ const SITE_URL = process.env.REACT_APP_SITE_URL;
 
 function App() {
   const [data, setData] = useState([]);
+  const [codes, setCodes] = useState(new Map());
   const [searchTerm, setSearchTerm] = useState("");
 
-  const fetchData = async () => {
+  const fetchCodes = async () => {
+    const { data, error } = await axios.get(`${SITE_URL + API_KEY}/codes`);
+    if (error) {
+      throw new Error(error.message);
+    }
+    if (data) {
+      const codes = new Map(data.supported_codes);
+      setCodes(codes);
+    }
+  };
+
+  useEffect(() => {
+    fetchCodes();
+  }, []);
+
+  const fetchData = async (term) => {
+    console.log(codes.get(term));
+
     const { data, error } = await axios.get(
-      `${SITE_URL + API_KEY}/latest/${searchTerm}`
+      `${SITE_URL + API_KEY}/latest/${term}`
     );
     if (error) {
       throw new Error(error.message);
     }
     if (data) {
-      console.log(data);
-      console.log(data.conversion_rates);
       setData(Object.entries(data.conversion_rates));
     }
   };
@@ -29,35 +45,34 @@ function App() {
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          fetchData();
+          fetchData(searchTerm);
         }}
       >
-        <input
+        <select
           onChange={(event) => {
             setSearchTerm(event.target.value);
           }}
-        />
+          value={searchTerm}
+        >
+          {Array.from(codes).map(([key, value]) => {
+            return (
+              <option key={nanoid()} value={key}>
+                {value}({key})
+              </option>
+            );
+          })}
+        </select>
         <button type="submit">Select Currency</button>
       </form>
       <div>
-        {data
-          ? data.map(([name, value]) => {
-              return (
-                <div key={nanoid()}>
-                  {name} : {value}
-                </div>
-              );
-            })
-          : null}
+        {data.map(([name, value]) => {
+          return (
+            <div key={nanoid()}>
+              {codes.get(name)} : {value}
+            </div>
+          );
+        })}
       </div>
-      <button
-        onClick={() => {
-          fetchData();
-        }}
-        className="text-2xl border rounded-md p-2 bg-blue-500 text-white"
-      >
-        Get Data
-      </button>
     </div>
   );
 }
