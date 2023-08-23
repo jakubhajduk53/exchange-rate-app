@@ -1,5 +1,6 @@
-import axios from "axios";
+import { Header } from "./components";
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { nanoid } from "nanoid";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
@@ -18,6 +19,7 @@ function App() {
     if (data) {
       const codes = new Map(data.supported_codes);
       setCodes(codes);
+      setSearchTerm(codes.entries().next().value[0]);
     }
   };
 
@@ -41,7 +43,7 @@ function App() {
 
   return (
     <div>
-      <p className="text-3xl">Exchange Rate App</p>
+      <Header />
       <form
         onSubmit={(event) => {
           event.preventDefault();
