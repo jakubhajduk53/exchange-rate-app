@@ -1,5 +1,6 @@
 import { Header } from "./components";
 import MainPage from "./pages/MainPage";
+import ConvertCurrencies from "./pages/ConvertCurrencies";
 import { Routes, Route } from "react-router";
 
 function App() {
@@ -8,7 +9,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/convert-currencies" />
+        <Route path="/convert-currencies" element={<ConvertCurrencies />} />
         <Route path="/enriched-data" />
       </Routes>
     </div>
