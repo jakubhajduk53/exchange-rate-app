@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { nanoid } from "nanoid";
+import classNames from "classnames";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 const SITE_URL = process.env.REACT_APP_SITE_URL;
+
+const formClasses = classNames("p-5 bg-gray-600 shadow-md rounded-xl");
 
 function MainPage() {
   const [data, setData] = useState([]);
@@ -23,8 +26,6 @@ function MainPage() {
   };
 
   const fetchData = async (term) => {
-    console.log(codes.get(term));
-
     const { data, error } = await axios.get(
       `${SITE_URL + API_KEY}/latest/${term}`
     );
@@ -41,18 +42,20 @@ function MainPage() {
   }, []);
 
   return (
-    <div>
+    <div className="w-full flex flex-col items-center">
       <form
         onSubmit={(event) => {
           event.preventDefault();
           fetchData(searchTerm);
         }}
+        className="flex gap-5 p-5"
       >
         <select
           onChange={(event) => {
             setSearchTerm(event.target.value);
           }}
           value={searchTerm}
+          className={formClasses}
         >
           {Array.from(codes).map(([key, value]) => {
             return (
@@ -62,13 +65,21 @@ function MainPage() {
             );
           })}
         </select>
-        <button type="submit">Select Currency</button>
+        <button type="submit" className={formClasses}>
+          Select Currency
+        </button>
       </form>
-      <div>
-        {data.map(([name, value]) => {
+      <div className="pb-5 text-center">
+        {data.map(([name, value], index) => {
           return (
-            <div key={nanoid()}>
-              {codes.get(name)} : {value}
+            <div
+              key={nanoid()}
+              className={index === 0 ? "text-3xl mb-2" : "text-lg"}
+            >
+              {codes.get(name)}:{" "}
+              <span className={value >= 1 ? "text-green-400" : "text-red-400"}>
+                {value}
+              </span>
             </div>
           );
         })}
