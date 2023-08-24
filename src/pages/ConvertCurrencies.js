@@ -6,7 +6,7 @@ import { nanoid } from "nanoid";
 const API_KEY = process.env.REACT_APP_API_KEY;
 const SITE_URL = process.env.REACT_APP_SITE_URL;
 
-const formClasses = classNames("p-5 bg-gray-600 shadow-md rounded-xl");
+const formClasses = classNames("p-5 bg-gray-600 shadow-md rounded-xl ");
 
 function ConvertCurrencies() {
   const [codes, setCodes] = useState(new Map());
@@ -66,7 +66,7 @@ function ConvertCurrencies() {
       >
         <div className="flex gap-5">
           <input
-            className={formClasses}
+            className={formClasses + "w-1/4 sm:w-auto"}
             value={inputValue.firstInput}
             onChange={(event) => {
               setInputValue((prevValue) => ({
@@ -85,7 +85,7 @@ function ConvertCurrencies() {
               }));
             }}
             value={currencies.firstCurrency}
-            className={formClasses}
+            className={formClasses + "w-3/4 sm:w-auto"}
           >
             {Array.from(codes).map(([key, value]) => {
               return (
@@ -98,7 +98,7 @@ function ConvertCurrencies() {
         </div>
         <div className="flex gap-5">
           <input
-            className={formClasses}
+            className={formClasses + "w-1/4 sm:w-auto"}
             disabled
             value={inputValue.secondInput}
             type="number"
@@ -112,7 +112,7 @@ function ConvertCurrencies() {
               }));
             }}
             value={currencies.secondCurrency}
-            className={formClasses}
+            className={formClasses + "w-3/4 sm:w-auto"}
           >
             {Array.from(codes).map(([key, value]) => {
               return (
