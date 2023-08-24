@@ -10,7 +10,6 @@ function App() {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/convert-currencies" element={<ConvertCurrencies />} />
-        <Route path="/enriched-data" />
       </Routes>
     </div>
   );

@@ -17,9 +17,6 @@ function Header() {
       <Link to="/convert-currencies" className={headerLinkClasses}>
         Convert Currencies
       </Link>
-      <Link to="/enriched-data" className={headerLinkClasses}>
-        Enriched Data
-      </Link>
     </div>
   );
 }
