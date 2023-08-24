@@ -45,36 +45,38 @@ function MainPage() {
 
   return (
     <div className="w-full h-full flex flex-col items-center">
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          fetchData(searchTerm);
-        }}
-        className="flex p-2 gap-2 sm:p-5 sm:gap-5"
-      >
-        <select
-          onChange={(event) => {
-            setSearchTerm(event.target.value);
+      {codes.size ? (
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            fetchData(searchTerm);
           }}
-          value={searchTerm}
-          className={formClasses + "w-3/4 sm:w-auto"}
+          className="flex p-2 gap-2 sm:p-5 sm:gap-5"
         >
-          {Array.from(codes).map(([key, value]) => {
-            return (
-              <option
-                key={nanoid()}
-                value={key}
-                className="text-sm sm:text-base max-w-5"
-              >
-                {value}({key})
-              </option>
-            );
-          })}
-        </select>
-        <button type="submit" className={formClasses}>
-          Select Currency
-        </button>
-      </form>
+          <select
+            onChange={(event) => {
+              setSearchTerm(event.target.value);
+            }}
+            value={searchTerm}
+            className={formClasses + "w-3/4 sm:w-auto"}
+          >
+            {Array.from(codes).map(([key, value]) => {
+              return (
+                <option
+                  key={nanoid()}
+                  value={key}
+                  className="text-sm sm:text-base max-w-5"
+                >
+                  {value}({key})
+                </option>
+              );
+            })}
+          </select>
+          <button type="submit" className={formClasses}>
+            Select Currency
+          </button>
+        </form>
+      ) : null}
       <div className="pb-5 text-center">
         {data.map(([name, value], index) => {
           return (

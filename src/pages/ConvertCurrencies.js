@@ -57,76 +57,74 @@ function ConvertCurrencies() {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          pairCurrencies();
-        }}
-        className="flex flex-col gap-5 p-5"
-      >
-        <div className="flex gap-5">
-          <input
-            className={formClasses + "w-1/4 sm:w-auto"}
-            value={inputValue.firstInput}
-            onChange={(event) => {
-              setInputValue((prevValue) => ({
-                ...prevValue,
-                firstInput: event.target.value,
-              }));
-            }}
-            type="number"
-            min={0}
-          />
-          <select
-            onChange={(event) => {
-              setCurrencies((prevValue) => ({
-                ...prevValue,
-                firstCurrency: event.target.value,
-              }));
-            }}
-            value={currencies.firstCurrency}
-            className={formClasses + "w-3/4 sm:w-auto"}
-          >
-            {Array.from(codes).map(([key, value]) => {
-              return (
-                <option key={nanoid()} value={key}>
-                  {value}({key})
-                </option>
-              );
-            })}
-          </select>
-        </div>
-        <div className="flex gap-5">
-          <input
-            className={formClasses + "w-1/4 sm:w-auto"}
-            disabled
-            value={inputValue.secondInput}
-            type="number"
-            min={0}
-          />
-          <select
-            onChange={(event) => {
-              setCurrencies((prevValue) => ({
-                ...prevValue,
-                secondCurrency: event.target.value,
-              }));
-            }}
-            value={currencies.secondCurrency}
-            className={formClasses + "w-3/4 sm:w-auto"}
-          >
-            {Array.from(codes).map(([key, value]) => {
-              return (
-                <option key={nanoid()} value={key}>
-                  {value}({key})
-                </option>
-              );
-            })}
-          </select>
-        </div>
-        <button type="submit" className={formClasses}>
-          Convert Currencies
-        </button>
-      </form>
+      {codes.size ? (
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            pairCurrencies();
+          }}
+          className="flex flex-col gap-5 p-5"
+        >
+          <div className="flex gap-5">
+            <input
+              className={formClasses + "w-1/4 sm:w-auto"}
+              value={inputValue.firstInput}
+              onChange={(event) => {
+                setInputValue((prevValue) => ({
+                  ...prevValue,
+                  firstInput: event.target.value,
+                }));
+              }}
+            />
+            <select
+              onChange={(event) => {
+                setCurrencies((prevValue) => ({
+                  ...prevValue,
+                  firstCurrency: event.target.value,
+                }));
+              }}
+              value={currencies.firstCurrency}
+              className={formClasses + "w-3/4 sm:w-auto"}
+            >
+              {Array.from(codes).map(([key, value]) => {
+                return (
+                  <option key={nanoid()} value={key}>
+                    {value}({key})
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <div className="flex gap-5">
+            <input
+              className={formClasses + "w-1/4 sm:w-auto"}
+              disabled
+              value={inputValue.secondInput}
+            />
+            <select
+              onChange={(event) => {
+                setCurrencies((prevValue) => ({
+                  ...prevValue,
+                  secondCurrency: event.target.value,
+                }));
+              }}
+              value={currencies.secondCurrency}
+              className={formClasses + "w-3/4 sm:w-auto"}
+            >
+              {Array.from(codes).map(([key, value]) => {
+                return (
+                  <option key={nanoid()} value={key}>
+                    {value}({key})
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          <button type="submit" className={formClasses}>
+            Convert Currencies
+          </button>
+        </form>
+      ) : null}
     </div>
   );
 }
