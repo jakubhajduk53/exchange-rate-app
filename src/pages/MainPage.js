@@ -1,3 +1,4 @@
+import Button from "../components/Button";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { nanoid } from "nanoid";
@@ -72,9 +73,7 @@ function MainPage() {
               );
             })}
           </select>
-          <button type="submit" className={formClasses}>
-            Select Currency
-          </button>
+          <Button type="submit" value="Select Currency" />
         </form>
       ) : null}
       <div className="pb-5 text-center">

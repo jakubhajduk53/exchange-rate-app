@@ -1,3 +1,4 @@
+import Button from "../components/Button";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import classNames from "classnames";
@@ -120,9 +121,7 @@ function ConvertCurrencies() {
               })}
             </select>
           </div>
-          <button type="submit" className={formClasses}>
-            Convert Currencies
-          </button>
+          <Button type="submit" value="Convert Currencies" />
         </form>
       ) : null}
     </div>
