@@ -6,7 +6,9 @@ import classNames from "classnames";
 const API_KEY = process.env.REACT_APP_API_KEY;
 const SITE_URL = process.env.REACT_APP_SITE_URL;
 
-const formClasses = classNames("p-5 bg-gray-600 shadow-md rounded-xl");
+const formClasses = classNames(
+  "bg-gray-600 shadow-md rounded-xl p-2 sm:p-5 text-sm sm:text-base "
+);
 
 function MainPage() {
   const [data, setData] = useState([]);
@@ -42,24 +44,28 @@ function MainPage() {
   }, []);
 
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="w-full h-full flex flex-col items-center">
       <form
         onSubmit={(event) => {
           event.preventDefault();
           fetchData(searchTerm);
         }}
-        className="flex gap-5 p-5"
+        className="flex p-2 gap-2 sm:p-5 sm:gap-5"
       >
         <select
           onChange={(event) => {
             setSearchTerm(event.target.value);
           }}
           value={searchTerm}
-          className={formClasses}
+          className={formClasses + "w-3/4 sm:w-auto"}
         >
           {Array.from(codes).map(([key, value]) => {
             return (
-              <option key={nanoid()} value={key}>
+              <option
+                key={nanoid()}
+                value={key}
+                className="text-sm sm:text-base max-w-5"
+              >
                 {value}({key})
               </option>
             );
