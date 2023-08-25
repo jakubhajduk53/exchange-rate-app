@@ -1,12 +1,8 @@
 import Button from "../components/Button";
+import { fetchCodes, fetchData } from "../api";
+import { formClasses } from "../data";
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
-import classNames from "classnames";
-import { fetchCodes, fetchData } from "../api";
-
-const formClasses = classNames(
-  "bg-gray-600 shadow-md rounded-xl p-2 sm:p-5 text-sm sm:text-base "
-);
 
 function MainPage() {
   const [data, setData] = useState([]);

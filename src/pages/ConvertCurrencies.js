@@ -1,10 +1,8 @@
 import Button from "../components/Button";
-import { useEffect, useState } from "react";
-import classNames from "classnames";
-import { nanoid } from "nanoid";
 import { fetchCodes, pairCurrencies } from "../api";
-
-const formClasses = classNames("p-5 bg-gray-600 shadow-md rounded-xl ");
+import { formClasses } from "../data";
+import { useEffect, useState } from "react";
+import { nanoid } from "nanoid";
 
 function ConvertCurrencies() {
   const [codes, setCodes] = useState(new Map());
