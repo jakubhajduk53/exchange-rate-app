@@ -1,11 +1,8 @@
 import Button from "../components/Button";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { nanoid } from "nanoid";
 import classNames from "classnames";
-
-const API_KEY = process.env.REACT_APP_API_KEY;
-const SITE_URL = process.env.REACT_APP_SITE_URL;
+import { fetchCodes, fetchData } from "../api";
 
 const formClasses = classNames(
   "bg-gray-600 shadow-md rounded-xl p-2 sm:p-5 text-sm sm:text-base "
@@ -16,41 +13,28 @@ function MainPage() {
   const [codes, setCodes] = useState(new Map());
   const [searchTerm, setSearchTerm] = useState("");
 
-  const fetchCodes = async () => {
-    const { data, error } = await axios.get(`${SITE_URL + API_KEY}/codes`);
-    if (error) {
-      throw new Error(error.message);
-    }
-    if (data) {
-      const codes = new Map(data.supported_codes);
-      setCodes(codes);
-      setSearchTerm(codes.entries().next().value[0]);
-    }
-  };
-
-  const fetchData = async (term) => {
-    const { data, error } = await axios.get(
-      `${SITE_URL + API_KEY}/latest/${term}`
-    );
-    if (error) {
-      throw new Error(error.message);
-    }
-    if (data) {
-      setData(Object.entries(data.conversion_rates));
-    }
+  const updateData = async () => {
+    const response = await fetchData(searchTerm);
+    setData(response);
   };
 
   useEffect(() => {
-    fetchCodes();
+    const getData = async () => {
+      const [fetchedCodes, firstCode] = await fetchCodes();
+      setCodes(fetchedCodes);
+      setSearchTerm(firstCode);
+    };
+
+    getData();
   }, []);
 
   return (
     <div className="w-full h-full flex flex-col items-center">
-      {codes.size ? (
+      {codes?.size ? (
         <form
           onSubmit={(event) => {
             event.preventDefault();
-            fetchData(searchTerm);
+            updateData();
           }}
           className="flex p-2 gap-2 sm:p-5 sm:gap-5"
         >

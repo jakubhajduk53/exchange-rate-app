@@ -1,11 +1,8 @@
 import Button from "../components/Button";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import classNames from "classnames";
 import { nanoid } from "nanoid";
-
-const API_KEY = process.env.REACT_APP_API_KEY;
-const SITE_URL = process.env.REACT_APP_SITE_URL;
+import { fetchCodes, pairCurrencies } from "../api";
 
 const formClasses = classNames("p-5 bg-gray-600 shadow-md rounded-xl ");
 
@@ -20,49 +17,36 @@ function ConvertCurrencies() {
     secondInput: 0,
   });
 
-  const fetchCodes = async () => {
-    const { data, error } = await axios.get(`${SITE_URL + API_KEY}/codes`);
-    if (error) {
-      throw new Error(error.message);
-    }
-    if (data) {
-      const codes = new Map(data.supported_codes);
-      setCodes(codes);
-      setCurrencies({
-        firstCurrency: codes.entries().next().value[0],
-        secondCurrency: codes.entries().next().value[0],
-      });
-    }
-  };
-
-  const pairCurrencies = async () => {
-    const { data, error } = await axios.get(
-      `${SITE_URL + API_KEY}/pair/${currencies.firstCurrency}/${
-        currencies.secondCurrency
-      }`
+  const convertCurrencies = async () => {
+    const conversionRate = await pairCurrencies(
+      currencies.firstCurrency,
+      currencies.secondCurrency
     );
-    if (error) {
-      throw new Error(error.message);
-    }
-    if (data) {
-      setInputValue((prevValue) => ({
-        ...prevValue,
-        secondInput: (inputValue.firstInput * data.conversion_rate).toFixed(2),
-      }));
-    }
+    setInputValue((prevValue) => ({
+      ...prevValue,
+      secondInput: inputValue.firstInput * conversionRate,
+    }));
   };
 
   useEffect(() => {
-    fetchCodes();
-  }, []);
+    const getData = async () => {
+      const [fetchedCodes, firstCode] = await fetchCodes();
+      setCodes(fetchedCodes);
+      setCurrencies({
+        firstCurrency: firstCode,
+        secondCurrency: firstCode,
+      });
+    };
 
+    getData();
+  }, []);
   return (
     <div className="w-full flex flex-col items-center">
       {codes.size ? (
         <form
           onSubmit={(event) => {
             event.preventDefault();
-            pairCurrencies();
+            convertCurrencies();
           }}
           className="flex flex-col gap-5 p-5"
         >
