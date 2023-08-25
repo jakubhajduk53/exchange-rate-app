@@ -1,7 +1,9 @@
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 
-const headerLinkClasses = classNames("sm:text-xl hover:text-blue-500");
+const headerLinkClasses = classNames(
+  "sm:text-xl hover:text-blue-500 transition-colors"
+);
 const headerClasses = classNames(
   "flex items-center justify-evenly sticky top-0 w-full p-5",
   "bg-black text-white shadow-md"
